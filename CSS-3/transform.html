@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .div1{
+            width: 100px;
+            height:100px;
+            background:red;
+            border:1px solid black;
+            margin:100px;
+            animation:ani 5s;
+}
+        @keyframes ani{
+            0%{
+                background-color: red;
+
+            }
+            25%{
+                 background-color: black;
+                        transition:transform 5s;
+                        transform: rotate(180deg);
+                        transform-origin: left;
+            }
+            50%{
+                        background-color: green;
+                        transition:transform 5s;
+                        transform-origin: left;
+                        transform: scale(2);
+            }
+            75%{
+                background-color:violet;
+                transition: tranform 5s;
+                transform: skew(10deg);
+            }
+            100%{
+                background-color: yellow;
+                transition:transform 5s;
+                transform-origin: left;
+                transform: scale(2);
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="div1"></div>
+    
+</body>
+</html>

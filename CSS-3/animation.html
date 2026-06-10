@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .div1{
+            width:100px;
+            height:100px;
+            background-color: red;
+            animation:anim 5s;
+            border:2px solid grey;
+            animation-iteration-count: 3;
+            position: relative;
+        }
+        @keyframes anim {
+            0%{
+                background-color: red;
+                border: 15px;
+                border-radius: 0%;
+                left:0px;
+                top:0px;
+            }
+            50%{
+                background-color: green;
+                border-radius: 25%;
+                left: 200px;
+                top:0px;
+            }
+            100%{
+                background-color: yellow;
+                border-radius: 50%;
+                left:500px;
+                top:200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="div1"></div>
+</body>
+</html>
