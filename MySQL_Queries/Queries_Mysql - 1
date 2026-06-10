@@ -1,0 +1,543 @@
+1. create Users Table and perform queries on it
+
+
+--Connecting to the Database
+
+SQL> connect sys as sysdba;
+Enter password: cvr123
+Connected.
+
+-- Create Users Table
+
+SQL> CREATE TABLE Users (
+  2  USER_ID NUMBER(5) PRIMARY KEY,
+  3  FULL_NAME VARCHAR2(50) NOT NULL,
+  4  EMAIL VARCHAR2(100) UNIQUE NOT NULL,
+  5  CITY VARCHAR2(50),
+  6  REGISTRATION_DATE DATE
+);
+
+Table created.
+
+-- Insert Records
+
+SQL> INSERT INTO Users VALUES
+  2  (501, 'Ananya', 'anu@gmail.com', 'Hyderabad', TO_DATE('12-MAY-2026','DD-MON-YYYY'));
+
+1 row created.
+
+SQL> INSERT INTO Users VALUES
+  2  (502, 'Saathwika', 'saath@gmail.com', 'Hyderabad', TO_DATE('10-MAY-2026','DD-MON-YYYY'));
+
+1 row created.
+
+SQL> INSERT INTO Users VALUES
+  2  (503, 'Meghana', 'meg@gmail.com', 'Nalgonda', TO_DATE('05-MAY-2026','DD-MON-YYYY'));
+
+1 row created.
+
+SQL> INSERT INTO Users VALUES
+  2  (504, 'Prashanthi', 'prus@gmail.com', 'Warangal', TO_DATE('30-APR-2026','DD-MON-YYYY'));
+
+1 row created.
+
+SQL> INSERT INTO Users VALUES
+  2  (505, 'Keerthi', 'Keer@gmail.com', 'Warangal', TO_DATE('27-APR-2026','DD-MON-YYYY'));
+
+1 row created.
+
+SQL> INSERT INTO Users VALUES
+  2  (506, 'Akshaya', 'Aks@gmail.com', 'Adilabad', TO_DATE('15-APR-2026','DD-MON-YYYY'));
+
+1 row created.
+
+SQL> INSERT INTO Users VALUES
+  2  (507, 'Aishwitha', 'Aish@gmail.com', 'Adilabad', TO_DATE('10-APR-2026','DD-MON-YYYY'));
+
+1 row created.
+
+SQL> INSERT INTO Users VALUES
+  2  (508, 'Harshitha', 'Harsh@gmail.com', 'Nalgonda', TO_DATE('18-APR-2026','DD-MON-YYYY'));
+
+1 row created.
+
+SQL> INSERT INTO Users VALUES
+  2  (509, 'Sharvani', 'Shar@gmail.com', 'Hyderabad', TO_DATE('21-APR-2026','DD-MON-YYYY'));
+
+1 row created.
+
+SQL> INSERT INTO Users VALUES
+  2  (510, 'Aishwarya', 'Aishu@gmail.com', 'Nizambad', TO_DATE('20-MAY-2026','DD-MON-YYYY'));
+
+1 row created.
+
+--Display Table's Structure
+
+SQL> desc Users;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ USER_ID                                   NOT NULL NUMBER(10)
+ FULL_NAME                                 NOT NULL VARCHAR2(100)
+ EMAIL                                     NOT NULL VARCHAR2(100)
+ CITY                                      NOT NULL VARCHAR2(100)
+ REGISTRATION_DATE                         NOT NULL DATE
+
+--Display users Table with values
+
+SQL> select * from Users;
+
+USER_ID FULL_NAME       EMAIL                     CITY            REGISTRATION_DATE
+------- --------------- ------------------------- --------------- ---------------
+    501 Ananya          anu@gmail.com             Hyderabad       12-MAY-26
+    502 Saathwika       saath@gmail.com           Hyderabad       10-MAY-26
+    503 Meghana         meg@gmail.com             Nalgonda        05-MAY-26
+    504 Prashanthi      prus@gmail.com            Warangal        30-APR-26
+    505 Keerthi         Keer@gmail.com            Warangal        27-APR-26
+    506 Akshaya         Aks@gmail.com             Adilabad        15-APR-26
+    507 Aishwitha       Aish@gmail.com            Adilabad        10-APR-26
+    508 Harshitha       Harsh@gmail.com           Nalgonda        18-APR-26
+    509 Sharvani        Shar@gmail.com            Hyderabad       21-APR-26
+    510 Aishwarya       Aishu@gmail.com           Nizambad        20-MAY-26
+
+10 rows selected.
+
+--Format the SQL query output
+
+SQL> SET LINESIZE 200;
+SQL> SET PAGESIZE 100;
+SQL>
+SQL> COLUMN user_id FORMAT 999;
+SQL> COLUMN full_name FORMAT A15;
+SQL> COLUMN email FORMAT A25;
+SQL> COLUMN city FORMAT A15;
+SQL> COLUMN registration_date FORMAT A15;
+
+--1. Find users registered in the last 30 days
+
+SQL> select * from Users
+  2  where registration_date>sysdate-30;
+
+USER_ID FULL_NAME       EMAIL                     CITY            REGISTRATION_DATE
+------- --------------- ------------------------- --------------- ---------------
+    501 Ananya          anu@gmail.com             Hyderabad       12-MAY-26
+    502 Saathwika       saath@gmail.com           Hyderabad       10-MAY-26
+    503 Meghana         meg@gmail.com             Nalgonda        05-MAY-26
+    504 Prashanthi      prus@gmail.com            Warangal        30-APR-26
+    510 Aishwarya       Aishu@gmail.com           Nizambad        20-MAY-26
+
+--2. Display users sorted by registration date
+
+SQL> select * from Users
+  2  order by registration_date;
+
+USER_ID FULL_NAME       EMAIL                     CITY            REGISTRATION_DATE
+------- --------------- ------------------------- --------------- ---------------
+    507 Aishwitha       Aish@gmail.com            Adilabad        10-APR-26
+    506 Akshaya         Aks@gmail.com             Adilabad        15-APR-26
+    508 Harshitha       Harsh@gmail.com           Nalgonda        18-APR-26
+    509 Sharvani        Shar@gmail.com            Hyderabad       21-APR-26
+    505 Keerthi         Keer@gmail.com            Warangal        27-APR-26
+    504 Prashanthi      prus@gmail.com            Warangal        30-APR-26
+    503 Meghana         meg@gmail.com             Nalgonda        05-MAY-26
+    502 Saathwika       saath@gmail.com           Hyderabad       10-MAY-26
+    501 Ananya          anu@gmail.com             Hyderabad       12-MAY-26
+    510 Aishwarya       Aishu@gmail.com           Nizambad        20-MAY-26
+
+10 rows selected.
+
+--3. Count number of users in each city
+
+SQL> select city,count(*) as total_users from Users group by city;
+
+CITY            TOTAL_USERS
+--------------- -----------
+Nalgonda                  2
+Nizambad                  1
+Hyderabad                 3
+Warangal                  2
+Adilabad                  2
+
+--4a. Find cities having more than 5 users
+
+SQL> select city,count(*) as total_users from Users group by city having count(*)> 5;
+
+no rows selected
+
+--4b. Find cities having more than 2 users
+
+SQL> select city,count(*) as total_users from Users group by city having count(*)> 2;
+
+CITY            TOTAL_USERS
+--------------- -----------
+Hyderabad                 3
+
+--5. Display users whose name starts with 'A'
+
+SQL> select * from Users where full_name like 'A%';
+
+USER_ID FULL_NAME       EMAIL                     CITY            REGISTRATION_DATE
+------- --------------- ------------------------- --------------- ---------------
+    501 Ananya          anu@gmail.com             Hyderabad       12-MAY-26
+    506 Akshaya         Aks@gmail.com             Adilabad        15-APR-26
+    507 Aishwitha       Aish@gmail.com            Adilabad        10-APR-26
+    510 Aishwarya       Aishu@gmail.com           Nizambad        20-MAY-26
+
+--6. Find duplicate cities in the Users table
+
+SQL> select city,count(*) as total_users from Users group by city having count(*)>1;
+
+CITY            TOTAL_USERS
+--------------- -----------
+Nalgonda                  2
+Hyderabad                 3
+Warangal                  2
+Adilabad                  2
+
+--7. Display users registered on weekends
+
+SQL> select * from Users where to_char(registration_date,'dy') in ('sat','sun');
+
+USER_ID FULL_NAME       EMAIL                     CITY            REGISTRATION_DATE
+------- --------------- ------------------------- --------------- ---------------
+    502 Saathwika       saath@gmail.com           Hyderabad       10-MAY-26
+    508 Harshitha       Harsh@gmail.com           Nalgonda        18-APR-26
+
+--8. Find the oldest registered user
+
+SQL> select * from Users where registration_date=(select min(registration_date) from Users);
+
+USER_ID FULL_NAME       EMAIL                     CITY            REGISTRATION_DATE
+------- --------------- ------------------------- --------------- ---------------
+    507 Aishwitha       Aish@gmail.com            Adilabad        10-APR-26
+
+--9. Display number of users registered each month
+
+SQL> select to_char(registration_date,'yyyy-mm') as month,count(*) as total_users from Users
+  2  group by to_char(registration_date,'yyyy-mm') order by month;
+
+MONTH   TOTAL_USERS
+------- -----------
+2026-04           6
+2026-05           4
+
+
+
+
+
+
+
+2. create Events Table and perform queries on it
+
+---- Create Users Table
+
+SQL> CREATE TABLE Events (
+  2      event_id NUMBER(10) PRIMARY KEY,
+  3      title VARCHAR2(200) NOT NULL,
+  4      description VARCHAR2(500),
+  5      city VARCHAR2(100) NOT NULL,
+  6      start_date DATE NOT NULL,
+  7      end_date DATE NOT NULL,
+  8      status VARCHAR2(20)
+  9          CHECK (status IN ('upcoming', 'completed', 'cancelled')),
+ 10      organizer_id NUMBER(10),
+ 11  constraint fk_organizer foreign key(organizer_id) references Users(user_id));
+
+Table created.
+
+----Display Table's Structure
+
+SQL> desc Events;
+ Name                                                                                                              Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ EVENT_ID                                                                                                          NOT NULL NUMBER(10)
+ TITLE                                                                                                             NOT NULL VARCHAR2(200)
+ DESCRIPTION                                                                                                                VARCHAR2(500)
+ CITY                                                                                                              NOT NULL VARCHAR2(100)
+ START_DATE                                                                                                        NOT NULL DATE
+ END_DATE                                                                                                          NOT NULL DATE
+ STATUS                                                                                                                     VARCHAR2(20)
+ ORGANIZER_ID
+
+-- Insert Records
+
+SQL> INSERT INTO Events VALUES
+  2  (1, 'Tech Fest', 'Annual Technical Event', 'Hyderabad',
+  3   TO_DATE('10-06-2026','DD-MM-YYYY'),
+  4   TO_DATE('12-06-2026','DD-MM-YYYY'),
+  5   'upcoming', 501);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO Events VALUES
+  2  (2, 'Hackathon', '24hr coding challenge', 'Warangal',
+  3   TO_DATE('15-06-2026','DD-MM-YYYY'),
+  4   TO_DATE('16-06-2026','DD-MM-YYYY'),
+  5   'upcoming', 502);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO Events VALUES
+  2  (3, 'Music Night', 'College cultural music event', 'Hyderabad',
+  3   TO_DATE('05-05-2026','DD-MM-YYYY'),
+  4   TO_DATE('05-05-2026','DD-MM-YYYY'),
+  5   'completed', 503);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO Events VALUES
+  2  (4, 'Startup Meetup', 'Entrepreneurs gathering', 'Nalgonda',
+  3   TO_DATE('20-06-2026','DD-MM-YYYY'),
+  4   TO_DATE('20-06-2026','DD-MM-YYYY'),
+  5   'upcoming', 504);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO Events VALUES
+  2  (5, 'AI Workshop', 'Machine Learning basics', 'Hyderabad',
+  3   TO_DATE('01-07-2026','DD-MM-YYYY'),
+  4   TO_DATE('03-07-2026','DD-MM-YYYY'),
+  5   'upcoming', 505);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO Events VALUES
+  2  (6, 'Sports Meet', 'Inter college sports event', 'Warangal',
+  3   TO_DATE('12-04-2026','DD-MM-YYYY'),
+  4   TO_DATE('14-04-2026','DD-MM-YYYY'),
+  5   'completed', 506);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO Events VALUES
+  2  (7, 'Coding Contest', 'Competitive programming event', 'Hyderabad',
+  3   TO_DATE('25-06-2026','DD-MM-YYYY'),
+  4   TO_DATE('25-06-2026','DD-MM-YYYY'),
+  5   'upcoming', 507);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO Events VALUES
+  2  (8, 'Robotics Expo', 'Robotics exhibition', 'Nizamabad',
+  3   TO_DATE('18-06-2026','DD-MM-YYYY'),
+  4   TO_DATE('19-06-2026','DD-MM-YYYY'),
+  5   'upcoming', 508);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO Events VALUES
+  2  (9, 'Art Exhibition', 'Student art showcase', 'Nalgonda',
+  3   TO_DATE('10-05-2026','DD-MM-YYYY'),
+  4   TO_DATE('11-05-2026','DD-MM-YYYY'),
+  5   'completed', 509);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO Events VALUES
+  2  (10, 'Career Fair', 'Job and internship fair', 'Hyderabad',
+  3   TO_DATE('30-06-2026','DD-MM-YYYY'),
+  4   TO_DATE('30-06-2026','DD-MM-YYYY'),
+  5   'upcoming', 510);
+
+1 row created.
+
+--1. Display all events with organizer names
+
+SQL> SELECT
+  2      e.event_id,
+  3      e.title,
+  4      u.full_name AS organizer_name,
+  5      e.city,
+  6      e.start_date,
+  7      e.end_date,
+  8      e.status
+  9  FROM Events e
+ 10  JOIN Users u
+ 11  ON e.organizer_id = u.user_id;
+
+  EVENT_ID
+----------
+TITLE
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ORGANIZER_NAME                                                                                       CITY            START_DAT END_DATE  STATUS
+---------------------------------------------------------------------------------------------------- --------------- --------- --------- --------------------
+         1
+Tech Fest
+Ananya                                                                                               Hyderabad       10-JUN-26 12-JUN-26 upcoming
+
+         2
+Hackathon
+Saathwika                                                                                            Warangal        15-JUN-26 16-JUN-26 upcoming
+
+         3
+Music Night
+Meghana                                                                                              Hyderabad       05-MAY-26 05-MAY-26 completed
+
+         4
+Startup Meetup
+Prashanthi                                                                                           Nalgonda        20-JUN-26 20-JUN-26 upcoming
+
+         5
+AI Workshop
+Keerthi                                                                                              Hyderabad       01-JUL-26 03-JUL-26 upcoming
+
+         6
+Sports Meet
+Akshaya                                                                                              Warangal        12-APR-26 14-APR-26 completed
+
+         7
+Coding Contest
+Aishwitha                                                                                            Hyderabad       25-JUN-26 25-JUN-26 upcoming
+
+         8
+Robotics Expo
+Harshitha                                                                                            Nizamabad       18-JUN-26 19-JUN-26 upcoming
+
+         9
+Art Exhibition
+Sharvani                                                                                             Nalgonda        10-MAY-26 11-MAY-26 completed
+
+        10
+Career Fair
+Aishwarya                                                                                            Hyderabad       30-JUN-26 30-JUN-26 upcoming
+
+
+10 rows selected.
+
+--2. Find upcoming events
+
+SQL> SELECT *
+  2  FROM Events
+  3  WHERE status = 'upcoming';
+
+  EVENT_ID
+----------
+TITLE
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+DESCRIPTION
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CITY            START_DAT END_DATE  STATUS               ORGANIZER_ID
+--------------- --------- --------- -------------------- ------------
+         1
+Tech Fest
+Annual Technical Event
+Hyderabad       10-JUN-26 12-JUN-26 upcoming                      501
+
+         2
+Hackathon
+24hr coding challenge
+Warangal        15-JUN-26 16-JUN-26 upcoming                      502
+
+         4
+Startup Meetup
+Entrepreneurs gathering
+Nalgonda        20-JUN-26 20-JUN-26 upcoming                      504
+
+         5
+AI Workshop
+Machine Learning basics
+Hyderabad       01-JUL-26 03-JUL-26 upcoming                      505
+
+         7
+Coding Contest
+Competitive programming event
+Hyderabad       25-JUN-26 25-JUN-26 upcoming                      507
+
+         8
+Robotics Expo
+Robotics exhibition
+Nizamabad       18-JUN-26 19-JUN-26 upcoming                      508
+
+        10
+Career Fair
+Job and internship fair
+Hyderabad       30-JUN-26 30-JUN-26 upcoming                      510
+
+
+7 rows selected.
+
+--3. Count number of events in each city
+
+SQL> SELECT city, COUNT(*) AS total_events
+  2  FROM Events
+  3  GROUP BY city;
+
+CITY            TOTAL_EVENTS
+--------------- ------------
+Nalgonda                   2
+Nizamabad                  1
+Hyderabad                  5
+Warangal                   2
+
+--4a. Find events lasting more than 2 days
+
+SQL> SELECT *
+  2  FROM Events
+  3  WHERE (end_date - start_date) > 2;
+
+no rows selected
+
+--4b. Find events lasting more than 1 days
+
+SQL> SELECT *
+  2  FROM Events
+  3  WHERE (end_date - start_date) > 1;
+
+  EVENT_ID
+----------
+TITLE
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+DESCRIPTION
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CITY            START_DAT END_DATE  STATUS               ORGANIZER_ID
+--------------- --------- --------- -------------------- ------------
+         1
+Tech Fest
+Annual Technical Event
+Hyderabad       10-JUN-26 12-JUN-26 upcoming                      501
+
+         5
+AI Workshop
+Machine Learning basics
+Hyderabad       01-JUL-26 03-JUL-26 upcoming                      505
+
+         6
+Sports Meet
+Inter college sports event
+Warangal        12-APR-26 14-APR-26 completed                     506
+
+--5. Display completed events organized by users from Hyderabad
+
+SQL> SELECT
+  2      e.event_id,
+  3      e.title,
+  4      e.city,
+  5      e.status,
+  6      u.full_name,
+  7      u.city AS organizer_city
+  8  FROM Events e
+  9  JOIN Users u
+ 10  ON e.organizer_id = u.user_id
+ 11  WHERE e.status = 'completed'
+ 12  AND u.city = 'Hyderabad';
+
+  EVENT_ID
+----------
+TITLE
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CITY            STATUS               FULL_NAME       ORGANIZER_CITY
+--------------- -------------------- --------------- ----------------------------------------------------------------------------------------------------
+         9
+Art Exhibition
+Nalgonda        completed            Sharvani        Hyderabad
+
+
+
